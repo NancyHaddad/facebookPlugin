@@ -17,7 +17,7 @@
                 <span>Facebook ID</span>
             </div>
             <div class="col-md-10 pull-left">
-                <input id="url" name="facebookId" type="text" class="form-control" ng-model="data.content.facebookId" required pattern="(https?\:\/\/)?(?:www\.)?(facebook|fb)\.com\/.+">
+                <input id="url" name="facebookId" placeholder="https://www.facebook.com" type="text" class="form-control" ng-model="data.content.facebookId" required pattern="(https?\:\/\/)?(?:www\.)?(facebook|fb)\.com\/.+">
             </div>
         </div>
 
@@ -25,30 +25,6 @@
             <div class="labels col-md-2 padding-right-zero pull-left"></div>
             <div class="col-md-10 pull-left">
                 <div class="alert alert-danger transition-half">Please enter Facebook ID</div>
-            </div>
-        </div>
-
-        <hr class="none">
-        <div class="item clearfix row">
-            <div class="labels col-md-2 padding-right-zero pull-left"></div>
-            <div class="col-md-10 pull-left">
-                <p>
-                    NOTE 1: For the best user experince link to mobile optimized content.
-                </p>
-
-                <p>
-                    NOTE 2: Based on your web content's settings, some contents will not show up in the emulator.
-                    however if you do not see your content in the emulator, it will still show up in the app.
-                </p>
-
-                <p>
-                    NOTE 3: If you are taking payments through this web page,
-                    you must open the the URL outside of the app or the app will get rejected by Apple in the submission review process.
-                </p>
-
-                <p>
-                    HINT: If you are taking payments, use your app or content DeepLink URL to redirect back to the app after a payment is made.
-                </p>
             </div>
         </div>
     </div>
