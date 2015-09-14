@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html ng-app="facebookPlugin">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>content</title>
+    <!-- CSS -->
+    <link href="../../../../styles/helper.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="../../../../scripts/buildfire.js"></script>
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+</head>
+<body ng-controller="facebookPluginCtrl" id="webviewApp" ng-cloak>
+    <div ng-form="frmMain">
+        <div class="item clearfix row margin-bottom-fifteen">
+            <div class="labels col-md-2 padding-right-zero pull-left">
+                <span>Facebook ID</span>
+            </div>
+            <div class="col-md-10 pull-left">
+                <input id="url" name="facebookId" placeholder="https://www.facebook.com" type="text" class="form-control" ng-model="data.content.facebookId" required pattern="(https?\:\/\/)?(?:www\.)?(facebook|fb)\.com\/.+">
+            </div>
+        </div>
+
+        <div class="item clearfix row" ng-show="idEmpty">
+            <div class="labels col-md-2 padding-right-zero pull-left"></div>
+            <div class="col-md-10 pull-left">
+                <div class="alert alert-danger transition-half">Please enter Facebook ID</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var facebookPluginApp = angular.module('facebookPlugin', []);
+
+        facebookPluginApp.controller("facebookPluginCtrl", ["$scope", "$log", "$timeout", function ($scope, $log, $timeout) {
+            var timer = null;
+
+            $scope.idEmpty = false;
+            /*
+             * Go pull any previously saved data
+             * */
+            buildfire.datastore.get(function (err, result) {
+                if (result && result.data && !angular.equals({}, result.data)) {
+                    $scope.data = result.data;
+                    $scope.id = result.id;
+                } else {
+                    $scope.data = {
+                        content: {
+                            facebookId: ""
+                        }
+                    };
+                }
+
+                /*
+                 * watch for changes in data and trigger the saveDataWithDelay function on change
+                 * */
+                $scope.$watch('data', saveData, true);
+
+                if (!$scope.$$phase && !$scope.$root.$$phase) {
+                    $scope.$apply();
+                }
+            });
+
+            /*
+             * Call the datastore to save the data object
+             */
+            var saveData = function (newObj, oldObj) {
+                //
+                // if the object did not change no need to save the data
+                if (angular.equals(newObj, oldObj) || newObj == undefined) {
+                    return;
+                }
+
+                if (timer) {
+                    $timeout.cancel(timer);
+                }
+
+                timer = $timeout(function () {
+                    var facebookId = newObj.content.facebookId;
+                    // if the form has some invalid data do not save, in our case the user eneter invalid URL
+                    if ($scope.frmMain.$invalid) {
+                        $log.warn('invalid data, details will not be saved');
+                        $scope.idEmpty = true;
+                    } else {
+                        $scope.idEmpty = false;
+
+                        if (!/^https?\:\/\//.test(newObj.content.facebookId)) {
+                            newObj.content.facebookId = "https://" + newObj.content.facebookId;
+                        }
+
+                        buildfire.datastore.save(newObj, function (err, result) {
+                            if (err || !result) {
+                                $log.error('Error saving the widget details: ', err);
+                            }
+                            else {
+                                $log.info('Widget details saved');
+                            }
+                        });
+                    }
+                }, 1000);
+            };
+        }]);
+    </script>
+</body>
+</html>

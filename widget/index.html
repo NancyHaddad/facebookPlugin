@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>widget</title>
+    <script src="../../../scripts/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../../../scripts/buildfire.js"></script>
+</head>
+<body>
+    <script>
+        buildfire.spinner.show();
+        /*
+         * Go pull saved data
+         * */
+        var loadData = function () {
+            buildfire.datastore.get(function (err, result) {
+                var content = null;
+                if (result && result.data && !angular.equals({}, result.data)) {
+                    if (result.data.content) {
+                        content = result.data.content;
+                        buildfire.navigation.openWindow(content.facebookId, "_system");
+                        buildfire.spinner.hide();
+                        if (buildfire.context.device.platform != "web") {
+                            buildfire.navigation.goBack();
+                        }
+                    }
+                } else {
+                    buildfire.spinner.hide();
+                }
+            });
+        }
+
+        loadData();
+
+        /**
+         * when a refresh is triggered get reload data
+         */
+        buildfire.datastore.onRefresh(loadData);
+
+        buildfire.datastore.onUpdate(function (e) {
+            loadData();
+        });
+    </script>
+</body>
+
+</html>
