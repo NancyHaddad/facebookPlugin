@@ -20,7 +20,9 @@
                         content = result.data.content;
                         buildfire.navigation.openWindow(content.facebookId, "_system");
                         buildfire.spinner.hide();
-                        //buildfire.navigation.goBack();
+                        if (buildfire.context.device.platform != "web") {
+                            buildfire.navigation.goBack();
+                        }
                     }
                 } else {
                     buildfire.spinner.hide();
