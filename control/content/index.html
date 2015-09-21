@@ -65,7 +65,6 @@
              * Call the datastore to save the data object
              */
             var saveData = function (newObj, oldObj) {
-                //
                 // if the object did not change no need to save the data
                 if (angular.equals(newObj, oldObj) || newObj == undefined) {
                     return;
@@ -76,7 +75,6 @@
                 }
 
                 timer = $timeout(function () {
-                    var facebookId = newObj.content.facebookId;
                     // if the form has some invalid data do not save, in our case the user eneter invalid URL
                     if ($scope.frmMain.$invalid) {
                         $log.warn('invalid data, details will not be saved');
