@@ -1,1 +1,1 @@
-# textPlugin ![](https://api.travis-ci.org/BuildFire/textPlugin.svg)
+# Facebook Plugin  ![](https://api.travis-ci.org/BuildFire/facebookPlugin.svg)
