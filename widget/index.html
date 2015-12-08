@@ -49,7 +49,7 @@
                     buildfire.spinner.hide();
 
                     if (buildfire.context.device.platform != "web") {
-                        buildfire.navigation.openWindow(content.facebookId, "_system");
+                        buildfire.navigation.openWindow(content.facebookId, "system");
                         buildfire.navigation.goBack();
                     } else {
                         document.querySelector(".link-verified").style.display = "block";
